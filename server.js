@@ -9,6 +9,9 @@ const app = express();
 // This will let us read the JSON bodies from requests
 app.use(express.json());
 
+const authorRoutes = require('./routes/authorRoutes');
+app.use('/authors', authorRoutes);
+
 // For health check
 app.get('/', (req, res) => {
   res.json({ message: 'Our ReadMore API is running well' });

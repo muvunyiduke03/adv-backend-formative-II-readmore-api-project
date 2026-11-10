@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
-const Author = require('../models/Author');
+const Author = require('../models/author');
+const Book = require('../models/book');
 
 // These will help the functions to handle errors
 const invalidId = (res) =>
@@ -109,4 +110,26 @@ const deleteAuthor = async(req, res) => {
   }
 };
 
-module.exports = {createAuthor, getAuthors, getAuthorbyId, updateAuthor, deleteAuthor};
+// GET /authors/:id/books
+const getBooksByAuthor = async(req, res) => {
+  try{
+    const {id} = req.params;
+    if (!mongoose.isValidObjectId(id)) {
+      return invalidId(res);
+    };
+
+    const author = await Author.findById(id);
+    if (!author){
+      return res.status(404).json({
+        message: `No author found with id: ${id}`
+      });
+    }
+
+    const books = await Book.find({author: id});
+    res.status(200).json({author, books});
+  } catch (err){
+    handleError(res, err);
+  }
+};
+
+module.exports = {createAuthor, getAuthors, getAuthorbyId, updateAuthor, deleteAuthor, getBooksByAuthor};

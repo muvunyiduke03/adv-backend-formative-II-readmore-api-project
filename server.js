@@ -12,6 +12,9 @@ app.use(express.json());
 const authorRoutes = require('./routes/authorRoutes');
 app.use('/authors', authorRoutes);
 
+const bookRoutes = require('./routes/bookRoutes');
+app.use('/books', bookRoutes);
+
 // For health check
 app.get('/', (req, res) => {
   res.json({ message: 'Our ReadMore API is running well' });
